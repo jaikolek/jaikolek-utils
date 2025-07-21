@@ -1,43 +1,53 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JaikolekUtils
 {
     public class TransformShake
     {
-        readonly protected Transform transformShake;
-        readonly protected float defaultAmmount;
-        readonly protected float defaultDuration;
-        readonly protected Vector2 originalPos;
+        private readonly Transform target;
+        private readonly Vector2 originalPos;
+        private readonly List<(float duration, float strength, float elapsed)> shakes = new();
 
-        public float shakeElapsed = 0f;
-        public float maxDuration = 0f;
-        public float currentStrength = 0f;
         public Coroutine shakeCoroutine;
 
-        public TransformShake(Transform transformShake, float defaultAmmount, float defaultDuration, Vector2 originalPos)
+        public TransformShake(Transform target)
         {
-            this.transformShake = transformShake;
-            this.defaultAmmount = defaultAmmount;
-            this.defaultDuration = defaultDuration;
-            this.originalPos = originalPos;
+            this.target = target;
+            this.originalPos = target.position;
         }
 
-        public IEnumerator DoShake(float duration)
+        public IEnumerator DoShake(float duration, float strength)
         {
-            while (shakeElapsed < duration || currentStrength > .01f)
+            shakes.Add((duration, strength, 0f));
+
+            while (shakes.Count > 0)
             {
-                float strength = currentStrength * (1f - Mathf.Clamp01(shakeElapsed / duration));
-                transformShake.position = originalPos + new Vector2(UnityEngine.Random.Range(-1f, 1f) * strength, UnityEngine.Random.Range(-1f, 1f) * strength);
-                shakeElapsed += Time.deltaTime;
-                currentStrength = Mathf.Lerp(currentStrength, 0f, Time.deltaTime * 5f);
+                Vector2 offset = Vector2.zero;
+
+                for (int i = shakes.Count - 1; i >= 0; i--)
+                {
+                    (float d, float s, float e) = shakes[i];
+                    e += Time.deltaTime;
+
+                    if (e >= d)
+                    {
+                        shakes.RemoveAt(i);
+                        continue;
+                    }
+
+                    shakes[i] = (d, s, e);
+
+                    float t = 1f - (e / d);
+                    offset += new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * s * t;
+                }
+
+                target.position = originalPos + offset;
                 yield return null;
             }
 
-            transformShake.position = originalPos;
-            currentStrength = 0f;
-            shakeElapsed = 0f;
-            maxDuration = 0f;
+            target.position = originalPos;
             shakeCoroutine = null;
         }
     }
