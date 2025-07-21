@@ -17,21 +17,13 @@ namespace JaikolekUtils.Times
 
         public static async Task DelayAwaitAsync(int delay, Action action = null)
         {
-            for (int i = delay; i >= 0; i++)
-            {
-                await Task.Delay(1000);
-            }
-
+            await Task.Delay(1000 * delay);
             action?.Invoke();
         }
 
         public static async Task DelayAwaitAsync(float delay, Action action = null)
         {
-            for (float i = delay; i >= 0; i -= 0.1f)
-            {
-                await Task.Delay((int)(.1f * 1000f));
-            }
-
+            await Task.Delay((int)(1000f * delay));
             action?.Invoke();
         }
     }
