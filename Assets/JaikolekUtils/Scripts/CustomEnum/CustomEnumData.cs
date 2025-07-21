@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ZLinq;
+using JaikolekUtils.Attributes;
 
 namespace JaikolekUtils.CustomEnum
 {
     [CreateAssetMenu(fileName = "CostumEnumData", menuName = "Enum/Costum Enum Data")]
     public class CustomEnumData : ScriptableObjectSingleton<CustomEnumData>
     {
-        //[Note("Make sure you update parameter 'value' usage to, if you want updating this custom enum data")]
-        //public NoteOnly noteOnly;
+        [Note("Make sure you update parameter 'value' usage to, if you want updating this custom enum data")]
+        public NoteOnly noteOnly;
 
         public List<CustomEnum> customEnumList;
         public Dictionary<string, string> customs;
