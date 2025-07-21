@@ -20,6 +20,7 @@ namespace JaikolekUtils
             {
                 if (instance == null)
                 {
+                    // Place this asset in Resources folder
                     instance = Resources.Load<T>(typeof(T).ToString());
                 }
 
