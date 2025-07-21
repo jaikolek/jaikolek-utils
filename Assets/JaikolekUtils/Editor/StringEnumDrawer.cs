@@ -6,7 +6,7 @@ using ZLinq;
 namespace JaikolekUtils.CustomEnum
 {
     [CustomPropertyDrawer(typeof(StringEnum))]
-    public class StringEnumEditor : PropertyDrawer
+    public class StringEnumDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
