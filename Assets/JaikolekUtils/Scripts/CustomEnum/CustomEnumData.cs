@@ -6,7 +6,7 @@ using JaikolekUtils.Attributes;
 
 namespace JaikolekUtils.CustomEnum
 {
-    [CreateAssetMenu(fileName = "CostumEnumData", menuName = "Enum/Costum Enum Data")]
+    [CreateAssetMenu(fileName = "CustomEnumData", menuName = "Enum/Custom Enum Data")]
     public class CustomEnumData : ScriptableObjectSingleton<CustomEnumData>
     {
         [Note("Make sure you update parameter 'value' usage to, if you want updating this custom enum data")]
